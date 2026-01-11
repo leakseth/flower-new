@@ -1,0 +1,1671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petal & Bloom - Flower Shop</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #b91c5f;
+            --primary-light: #d81e7f;
+            --secondary: #faf5f0;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --border: #e5e7eb;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+    /* Header & Navigation */
+        header {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        main {
+            padding-top: 80px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        nav a {
+            color: var(--text-dark);
+            text-decoration: none;
+            margin: 0 1.5rem;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-light);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--secondary);
+        }
+
+        .cart-badge {
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(to right, #fdf2f8, #fce7f3);
+            padding: 8rem 1rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Products Grid */
+        .section {
+            padding: 5rem 0;
+        }
+
+        .section-title {
+            font-size: 2.25rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            background: #f3f4f6;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .product-name:hover {
+            color: var(--primary);
+        }
+
+        .product-description {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        /* Modals */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 0.5rem;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(185, 28, 95, 0.1);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .form-actions button {
+            flex: 1;
+        }
+
+        .error-message {
+            color: #dc2626;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            background: #f9fafb;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .testimonial-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .testimonial-text {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        /* About Section */
+        .about {
+            background: white;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-text h2 {
+            font-size: 2.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .about-text p {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .about-image {
+            width: 100%;
+            height: 400px;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Services */
+        .services {
+            background: #f9fafb;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .service-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .service-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .service-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .service-card p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Contact */
+        .contact {
+            background: white;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Footer */
+        footer {
+            background: #1f2937;
+            color: white;
+            padding: 3rem 0;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1rem;
+        }
+
+        .footer-section a {
+            display: block;
+            color: #d1d5db;
+            text-decoration: none;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #374151;
+            padding-top: 2rem;
+            text-align: center;
+            color: #d1d5db;
+        }
+
+        /* Product Detail Modal */
+        .product-detail {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .product-detail-image {
+            width: 100%;
+            height: 400px;
+            background: #f3f4f6;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .product-detail-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-detail-info h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .quantity-selector button {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--border);
+            background: white;
+            cursor: pointer;
+            border-radius: 0.25rem;
+        }
+
+        .quantity-selector input {
+            width: 60px;
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: 0.25rem;
+            text-align: center;
+        }
+
+        /* Cart */
+        .cart-empty {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-light);
+        }
+
+        .cart-items {
+            background: white;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .cart-item {
+            display: grid;
+            grid-template-columns: 100px 1fr auto auto;
+            gap: 1rem;
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            align-items: center;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-item-image {
+            width: 100px;
+            height: 100px;
+            background: #f3f4f6;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .cart-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .cart-item-info h3 {
+            margin-bottom: 0.25rem;
+        }
+
+        .cart-item-price {
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .cart-item-quantity button {
+            width: 32px;
+            height: 32px;
+            border: 1px solid var(--border);
+            background: white;
+            cursor: pointer;
+            border-radius: 0.25rem;
+        }
+
+        .cart-summary {
+            background: var(--secondary);
+            padding: 2rem;
+            border-radius: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .summary-row.total {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            border-top: 1px solid var(--border);
+            padding-top: 1rem;
+            margin-top: 1rem;
+        }
+
+        .user-menu {
+            position: relative;
+        }
+
+        .user-menu-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .user-menu-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            min-width: 200px;
+            z-index: 101;
+        }
+
+        .user-menu-dropdown.active {
+            display: block;
+        }
+
+        .user-menu-dropdown a,
+        .user-menu-dropdown button {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 0.75rem 1rem;
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: var(--text-dark);
+            text-decoration: none;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .user-menu-dropdown a:last-child,
+        .user-menu-dropdown button:last-child {
+            border-bottom: none;
+        }
+
+        .user-menu-dropdown a:hover,
+        .user-menu-dropdown button:hover {
+            background: var(--secondary);
+        }
+        .navigation {
+            display: none;
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            padding: 0.75rem;
+            border: none;
+            background: transparent;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            width: 40px;
+            height: 40px;
+        }
+
+        .hamburger:hover {
+            background: var(--secondary);
+        }
+
+        .hamburger::before,
+        .hamburger::after,
+        .hamburger span {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 2px;
+            background: var(--text-dark);
+            transition: all 0.3s ease;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .hamburger::before {
+            top: 12px;
+        }
+
+        .hamburger span {
+            top: 19px;
+        }
+
+        .hamburger::after {
+            top: 26px;
+        }
+
+        .hamburger.active::before {
+            transform: translateX(-50%) rotate(45deg);
+            top: 19px;
+        }
+
+        .hamburger.active span {
+            opacity: 0;
+        }
+
+        .hamburger.active::after {
+            transform: translateX(-50%) rotate(-45deg);
+            top: 19px;
+        }
+
+        .navigation.active {
+            display: flex !important;
+            flex-direction: column;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 2rem 1rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            border-radius: 0 0 0.5rem 0.5rem;
+            z-index: 100;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .navigation.active a {
+            margin: 0.75rem 0;
+            text-align: center;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .navigation.active a:hover {
+            background: var(--secondary);
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        @media (min-width: 769px) {
+            .navigation {
+                display: flex;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .section {
+                padding: 3rem 0;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 1.5rem;
+            }
+
+            .about-content,
+            .product-detail {
+                grid-template-columns: 1fr;
+            }
+
+            .cart-item {
+                grid-template-columns: 80px 1fr auto;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 1.5rem;
+            }
+
+            .cartModal .modal-content {
+                max-width: 95%;
+            }
+
+            .header-actions {
+                gap: 0.5rem;
+            }
+
+            .btn {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                padding: 4rem 1rem;
+            }
+
+            .hero h1 {
+                font-size: 1.75rem;
+            }
+
+            .hero p {
+                font-size: 0.95rem;
+            }
+
+            .section-title {
+                font-size: 1.75rem;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .product-card {
+                max-width: 100%;
+            }
+
+            .cart-item {
+                grid-template-columns: 60px 1fr auto;
+                padding: 1rem;
+                gap: 0.5rem;
+            }
+
+            .cart-item-image {
+                width: 60px;
+                height: 60px;
+            }
+
+            .cart-item-quantity button {
+                width: 24px;
+                height: 24px;
+                font-size: 0.8rem;
+            }
+
+            .cart-item-quantity input {
+                width: 40px;
+                padding: 0.25rem;
+                font-size: 0.9rem;
+            }
+
+            .summary-row {
+                font-size: 0.95rem;
+            }
+
+            .summary-row.total {
+                font-size: 1.25rem;
+            }
+
+            .btn {
+                padding: 0.6rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header id="header" style="position: fixed; width: 100%;"></header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero -->
+        <section class="hero">
+            <div class="container">
+                <h1>Nature's finest blooms, curated with care</h1>
+                <p>Discover artisan bouquets crafted to celebrate life's beautiful moments</p>
+                <a href="#flowers" class="btn btn-primary">Explore Our Collection</a>
+            </div>
+        </section>
+
+        <!-- Featured Products -->
+        <section id="flowers" class="section" style="background: white;">
+            <div class="container">
+                <h2 class="section-title">Featured Arrangements</h2>
+                <p class="section-subtitle">Each bouquet is carefully designed by our expert florists using the freshest seasonal blooms</p>
+                <div class="products-grid" id="productsGrid"></div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section id="testimonials" class="testimonials section">
+            <div class="container">
+                <h2 class="section-title">What Our Customers Say</h2>
+                <p class="section-subtitle">We're proud to bring joy to thousands of customers through our beautiful arrangements</p>
+                <div class="testimonials-grid" id="testimonialsContainer"></div>
+            </div>
+        </section>
+
+        <!-- About -->
+        <section id="about" class="about section">
+            <div class="container">
+                <div class="about-content">
+                    <div class="about-text">
+                        <h2>Crafting floral artistry since 1998</h2>
+                        <p>At Petal & Bloom, we believe every flower tells a story. Our expert florists hand-select the finest blooms from local growers and international suppliers, ensuring every arrangement is a masterpiece.</p>
+                        <p>With over 25 years of experience, we've become the trusted choice for life's most important moments—from intimate celebrations to grand events. Our commitment to quality, creativity, and customer satisfaction has made us a beloved part of the community.</p>
+                        <p>Visit our boutique to experience the art of floristry firsthand, or let us deliver beauty directly to your door.</p>
+                    </div>
+                    <div class="about-image">
+                        <img src="/placeholder.svg?height=400&width=400" alt="Petal & Bloom florists">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services -->
+        <section id="services" class="services section">
+            <div class="container">
+                <h2 class="section-title">Our Services</h2>
+                <p class="section-subtitle">From intimate gatherings to grand celebrations, we create floral experiences for every occasion</p>
+                <div class="services-grid" id="servicesContainer"></div>
+            </div>
+        </section>
+
+        <!-- Contact -->
+        <section id="contact" class="contact section">
+            <div class="container">
+                <h2 class="section-title">Get In Touch</h2>
+                <p class="section-subtitle">We'd love to hear from you. Drop us a message and we'll get back to you soon</p>
+                <form class="contact-form" id="contactForm">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Message</label>
+                        <textarea rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="footer"></footer>
+
+    <!-- Modals -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('loginModal')">&times;</button>
+            <h2 style="margin-bottom: 1.5rem;">Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <div id="loginError" class="error-message"></div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Login</button>
+                    <button type="button" class="btn btn-secondary" onclick="switchModal('registerModal')">Register</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="registerModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('registerModal')">&times;</button>
+            <h2 style="margin-bottom: 1.5rem;">Register</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="registerName" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="registerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="registerPassword" required>
+                </div>
+                <div id="registerError" class="error-message"></div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Register</button>
+                    <button type="button" class="btn btn-secondary" onclick="switchModal('loginModal')">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('productModal')">&times;</button>
+            <div id="productModalContent"></div>
+        </div>
+    </div>
+
+    <div class="modal" id="cartModal">
+        <div class="modal-content" style="max-width: 700px;">
+            <button class="modal-close" onclick="closeModal('cartModal')">&times;</button>
+            <h2 style="margin-bottom: 1.5rem;">Shopping Cart</h2>
+            <div id="cartContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // Product Data
+        const products = [
+            {
+                id: 1,
+                name: "Romantic Rose Bouquet",
+                price: 85,
+                description: "A stunning arrangement of deep red and pink roses perfect for expressing your deepest emotions.",
+                image: "/placeholder.svg?height=250&width=300"
+            },
+            {
+                id: 2,
+                name: "Tropical Paradise",
+                price: 95,
+                description: "Vibrant orchids and exotic blooms that bring the warmth of tropical islands to your home.",
+                image: "/placeholder.svg?height=250&width=300"
+            },
+            {
+                id: 3,
+                name: "Lavender Dreams",
+                price: 75,
+                description: "Soft purple lavender combined with white daisies for a calm and soothing arrangement.",
+                image: "/placeholder.svg?height=250&width=300"
+            },
+            {
+                id: 4,
+                name: "Sunset Glow",
+                price: 80,
+                description: "Warm orange and peachy tones create a mesmerizing sunset effect.",
+                image: "/placeholder.svg?height=250&width=300"
+            },
+            {
+                id: 5,
+                name: "Pure Elegance",
+                price: 90,
+                description: "Classic white lilies arranged with greenery for timeless beauty.",
+                image: "/placeholder.svg?height=250&width=300"
+            },
+            {
+                id: 6,
+                name: "Wildflower Mix",
+                price: 70,
+                description: "A vibrant collection of wildflowers bringing natural, rustic charm.",
+                image: "/placeholder.svg?height=250&width=300"
+            }
+        ];
+
+        const testimonials = [
+            {
+                text: "The most beautiful bouquet I've ever received! The flowers lasted for over two weeks and the arrangement was absolutely stunning.",
+                author: "Sarah Mitchell"
+            },
+            {
+                text: "Petal & Bloom made my wedding day perfect. Their attention to detail and creativity exceeded all my expectations.",
+                author: "Emily Chen"
+            },
+            {
+                text: "I order from them monthly for my office. The subscription service is convenient and the flowers always brighten our workspace.",
+                author: "Michael Rodriguez"
+            }
+        ];
+
+        const services = [
+            {
+                icon: "❀",
+                title: "Wedding Florals",
+                description: "Complete wedding flower services from bouquets to venue decorations, tailored to your vision"
+            },
+            {
+                icon: "✿",
+                title: "Event Design",
+                description: "Transform your corporate events, parties, and special occasions with stunning floral installations"
+            },
+            {
+                icon: "❁",
+                title: "Subscriptions",
+                description: "Regular flower deliveries to your home or office, keeping your space fresh and vibrant year-round"
+            },
+            {
+                icon: "✾",
+                title: "Custom Designs",
+                description: "Work directly with our designers to create unique arrangements perfect for any occasion"
+            }
+        ];
+
+        // Initialize App
+        function init() {
+            renderHeader();
+            renderProducts();
+            renderTestimonials();
+            renderServices();
+            renderFooter();
+            setupEventListeners();
+            updateHeader();
+        }
+
+        // Render Header
+        function renderHeader() {
+            const header = document.getElementById('header');
+            const user = getCurrentUser();
+
+            header.innerHTML = `
+                <div class="container">
+                    <div class="header-content">
+                        <div class="logo">🌸 Petal & Bloom</div>
+                        <button class="hamburger" onclick="toggleMenu()">☰</button>
+                        <nav class="navigation">
+                            <a href="#flowers">Shop</a>
+                            <a href="#about">About</a>
+                            <a href="#services">Services</a>
+                            <a href="#contact">Contact</a>
+                        </nav>
+                        <div class="header-actions">
+                            <button class="btn btn-secondary" style="gap: 0.5rem;" onclick="openModal('cartModal')">
+                                🛒 <span id="cartCount">0</span>
+                            </button>
+                            <div class="user-menu">
+                                ${user ? `
+                                    <button class="user-menu-toggle" onclick="toggleUserMenu()">👤 ${user.name}</button>
+                                    <div class="user-menu-dropdown" id="userMenuDropdown">
+                                        <a href="#" onclick="viewAccount(event)">My Account</a>
+                                        <button onclick="logout()">Logout</button>
+                                    </div>
+                                ` : `
+                                    <button class="btn btn-primary" onclick="openModal('loginModal')">Login</button>
+                                `}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function updateHeader() {
+            const cart = getCart();
+            const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const cartCountEl = document.getElementById('cartCount');
+            if (cartCountEl) {
+                cartCountEl.textContent = count;
+            }
+        }
+
+        // Render Products
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = products.map(product => `
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="${product.image}" alt="${product.name}">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name" onclick="viewProduct(${product.id})">${product.name}</h3>
+                        <p class="product-description">${product.description}</p>
+                        <div class="product-footer">
+                            <span class="price">$${product.price.toFixed(2)}</span>
+                            <button class="btn btn-primary" onclick="addToCart(${product.id})">Add</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render Testimonials
+        function renderTestimonials() {
+            const container = document.getElementById('testimonialsContainer');
+            container.innerHTML = testimonials.map(testimonial => `
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"${testimonial.text}"</p>
+                    <p class="testimonial-author">— ${testimonial.author}</p>
+                </div>
+            `).join('');
+        }
+
+        // Render Services
+        function renderServices() {
+            const container = document.getElementById('servicesContainer');
+            container.innerHTML = services.map(service => `
+                <div class="service-card">
+                    <div class="service-icon">${service.icon}</div>
+                    <h3>${service.title}</h3>
+                    <p>${service.description}</p>
+                </div>
+            `).join('');
+        }
+
+        // Render Footer
+        function renderFooter() {
+            const footer = document.getElementById('footer');
+            footer.innerHTML = `
+                <div class="container">
+                    <div class="footer-grid">
+                        <div class="footer-section">
+                            <h4>About Petal & Bloom</h4>
+                            <p style="color: #d1d5db; margin-bottom: 1rem;">Your trusted partner for beautiful, fresh flowers and exceptional floral design since 2010.</p>
+                            <div style="display: flex; gap: 1rem;">
+                                <a href="#">Instagram</a>
+                                <a href="#">Facebook</a>
+                                <a href="#">Pinterest</a>
+                            </div>
+                        </div>
+                        <div class="footer-section">
+                            <h4>Quick Links</h4>
+                            <a href="#flowers">Shop Flowers</a>
+                            <a href="#services">Our Services</a>
+                            <a href="#about">About Us</a>
+                            <a href="#contact">Contact</a>
+                        </div>
+                        <div class="footer-section">
+                            <h4>Contact Us</h4>
+                            <p style="color: #d1d5db; margin-bottom: 0.5rem;">123 Garden Street</p>
+                            <p style="color: #d1d5db; margin-bottom: 0.5rem;">Bloomville, FL 12345</p>
+                            <p style="color: #d1d5db; margin-bottom: 0.5rem;">Phone: (555) 123-4567</p>
+                            <p style="color: #d1d5db;">Email: hello@petalbloom.com</p>
+                        </div>
+                    </div>
+                    <div class="footer-bottom">
+                        <p>&copy; 2026 Petal & Bloom. All rights reserved.</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Modal Functions
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+            if (modalId === 'cartModal') {
+                renderCart();
+            }
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        function switchModal(newModalId) {
+            document.querySelectorAll('.modal.active').forEach(m => m.classList.remove('active'));
+            openModal(newModalId);
+        }
+
+        // Product Functions
+        function viewProduct(productId) {
+            const product = products.find(p => p.id === productId);
+            const modal = document.getElementById('productModal');
+            const content = document.getElementById('productModalContent');
+
+            let quantity = 1;
+            content.innerHTML = `
+                <div class="product-detail">
+                    <div class="product-detail-image">
+                        <img src="${product.image}" alt="${product.name}">
+                    </div>
+                    <div class="product-detail-info">
+                        <h2>${product.name}</h2>
+                        <p style="color: var(--text-light); margin-bottom: 1rem;">${product.description}</p>
+                        <p style="font-size: 2rem; font-weight: bold; color: var(--primary); margin-bottom: 1rem;">$${product.price.toFixed(2)}</p>
+                        
+                        <div class="quantity-selector">
+                            <button type="button" onclick="decreaseQty(${productId})">−</button>
+                            <input type="number" id="qty-${productId}" value="1" min="1" max="99">
+                            <button type="button" onclick="increaseQty(${productId})">+</button>
+                        </div>
+
+                        <button class="btn btn-primary" style="width: 100%; padding: 1rem;" onclick="addToCart(${productId}, document.getElementById('qty-${productId}').value)">Add to Cart</button>
+                    </div>
+                </div>
+            `;
+            openModal('productModal');
+        }
+
+        function increaseQty(productId) {
+            const input = document.getElementById(`qty-${productId}`);
+            input.value = parseInt(input.value) + 1;
+        }
+
+        function decreaseQty(productId) {
+            const input = document.getElementById(`qty-${productId}`);
+            if (parseInt(input.value) > 1) {
+                input.value = parseInt(input.value) - 1;
+            }
+        }
+
+        // Cart Functions
+        function getCart() {
+            return JSON.parse(localStorage.getItem('cart') || '[]');
+        }
+
+        function saveCart(cart) {
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateHeader();
+        }
+
+        function addToCart(productId, quantity = 1) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            const cart = getCart();
+            const existing = cart.find(item => item.id === productId);
+
+            if (existing) {
+                existing.quantity += parseInt(quantity);
+            } else {
+                cart.push({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    image: product.image,
+                    quantity: parseInt(quantity)
+                });
+            }
+
+            saveCart(cart);
+            closeModal('productModal');
+            updateHeader();
+
+            // Show feedback
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.textContent = 'Added!';
+            setTimeout(() => {
+                btn.textContent = originalText;
+            }, 2000);
+        }
+
+        function removeFromCart(productId) {
+            const cart = getCart();
+            const index = cart.findIndex(item => item.id === productId);
+            if (index > -1) {
+                cart.splice(index, 1);
+            }
+            saveCart(cart);
+            renderCart();
+        }
+
+        function updateCartQuantity(productId, quantity) {
+            const cart = getCart();
+            const item = cart.find(i => i.id === productId);
+            if (item) {
+                item.quantity = parseInt(quantity);
+                if (item.quantity <= 0) {
+                    removeFromCart(productId);
+                } else {
+                    saveCart(cart);
+                    renderCart();
+                }
+            }
+        }
+
+        function decreaseCartQty(productId) {
+            const cart = getCart();
+            const item = cart.find(i => i.id === productId);
+            if (item && item.quantity > 1) {
+                item.quantity -= 1;
+                saveCart(cart);
+                // Update the input field
+                const input = document.getElementById(`cart-qty-${productId}`);
+                if (input) {
+                    input.value = item.quantity;
+                }
+                // Update the summary
+                updateCartSummary();
+            }
+        }
+
+        function increaseCartQty(productId) {
+            const cart = getCart();
+            const item = cart.find(i => i.id === productId);
+            if (item) {
+                item.quantity += 1;
+                saveCart(cart);
+                // Update the input field
+                const input = document.getElementById(`cart-qty-${productId}`);
+                if (input) {
+                    input.value = item.quantity;
+                }
+                // Update the summary
+                updateCartSummary();
+            }
+        }
+
+        function updateCartSummary() {
+            const cart = getCart();
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const tax = subtotal * 0.08;
+            const total = subtotal + tax;
+            const summary = document.querySelector('.cart-summary');
+            if (summary) {
+                summary.innerHTML = `
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span>$${subtotal.toFixed(2)}</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Tax (8%):</span>
+                        <span>$${tax.toFixed(2)}</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total:</span>
+                        <span>$${total.toFixed(2)}</span>
+                    </div>
+                    <button class="btn btn-primary" style="width: 100%; padding: 1rem; margin-top: 1rem;" onclick="checkout()">Proceed to Checkout</button>
+                `;
+            }
+        }
+
+        function renderCart() {
+            const content = document.getElementById('cartContent');
+            const cart = getCart();
+
+            if (cart.length === 0) {
+                content.innerHTML = '<div class="cart-empty">Your cart is empty</div>';
+                return;
+            }
+
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const tax = subtotal * 0.08;
+            const total = subtotal + tax;
+
+            content.innerHTML = `
+                <div class="cart-items">
+                    ${cart.map(item => `
+                        <div class="cart-item">
+                            <div class="cart-item-image">
+                                <img src="${item.image}" alt="${item.name}">
+                            </div>
+                            <div class="cart-item-info">
+                                <h3>${item.name}</h3>
+                                <div class="cart-item-price">$${item.price.toFixed(2)}</div>
+                            </div>
+                            <div class="cart-item-quantity">
+                                <button onclick="decreaseCartQty(${item.id})">−</button>
+                                <input id="cart-qty-${item.id}" type="number" value="${item.quantity}" min="1" onchange="updateCartQuantity(${item.id}, this.value)">
+                                <button onclick="increaseCartQty(${item.id})">+</button>
+                            </div>
+                            <div>
+                                <button class="btn btn-secondary" onclick="removeFromCart(${item.id})">Remove</button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div class="cart-summary">
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span>$${subtotal.toFixed(2)}</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Tax (8%):</span>
+                        <span>$${tax.toFixed(2)}</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total:</span>
+                        <span>$${total.toFixed(2)}</span>
+                    </div>
+                    <button class="btn btn-primary" style="width: 100%; padding: 1rem; margin-top: 1rem;" onclick="checkout()">Proceed to Checkout</button>
+                </div>
+            `;
+        }
+
+        function checkout() {
+            const user = getCurrentUser();
+            if (!user) {
+                closeModal('cartModal');
+                openModal('loginModal');
+                return;
+            }
+
+            const cart = getCart();
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) * 1.08;
+            const orderId = 'ORD-' + Date.now();
+
+            // Show confirmation
+            alert(`Order Confirmed!\n\nOrder ID: ${orderId}\nTotal: $${total.toFixed(2)}\n\nThank you for your purchase!`);
+
+            localStorage.setItem('orders', JSON.stringify([
+                ...JSON.parse(localStorage.getItem('orders') || '[]'),
+                {
+                    id: orderId,
+                    items: cart,
+                    total: total,
+                    date: new Date().toISOString()
+                }
+            ]));
+
+            localStorage.setItem('cart', JSON.stringify([]));
+            closeModal('cartModal');
+            updateHeader();
+        }
+
+        // Auth Functions
+        function getCurrentUser() {
+            const user = localStorage.getItem('currentUser');
+            return user ? JSON.parse(user) : null;
+        }
+
+        function setupEventListeners() {
+            // Login Form
+            const loginForm = document.getElementById('loginForm');
+            if (loginForm) {
+                loginForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const email = document.getElementById('loginEmail').value;
+                    const password = document.getElementById('loginPassword').value;
+                    const errorEl = document.getElementById('loginError');
+
+                    const users = JSON.parse(localStorage.getItem('users') || '[]');
+                    const user = users.find(u => u.email === email);
+
+                    if (!user) {
+                        errorEl.textContent = 'User not found';
+                        return;
+                    }
+
+                    const passwords = JSON.parse(localStorage.getItem('passwords') || '{}');
+                    if (passwords[user.id] !== btoa(password)) {
+                        errorEl.textContent = 'Invalid password';
+                        return;
+                    }
+
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    closeModal('loginModal');
+                    renderHeader();
+                    updateHeader();
+                    loginForm.reset();
+                });
+            }
+
+            // Register Form
+            const registerForm = document.getElementById('registerForm');
+            if (registerForm) {
+                registerForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const name = document.getElementById('registerName').value;
+                    const email = document.getElementById('registerEmail').value;
+                    const password = document.getElementById('registerPassword').value;
+                    const errorEl = document.getElementById('registerError');
+
+                    const users = JSON.parse(localStorage.getItem('users') || '[]');
+                    if (users.some(u => u.email === email)) {
+                        errorEl.textContent = 'Email already registered';
+                        return;
+                    }
+
+                    const newUser = {
+                        id: Date.now().toString(),
+                        email: email,
+                        name: name
+                    };
+
+                    users.push(newUser);
+                    localStorage.setItem('users', JSON.stringify(users));
+
+                    const passwords = JSON.parse(localStorage.getItem('passwords') || '{}');
+                    passwords[newUser.id] = btoa(password);
+                    localStorage.setItem('passwords', JSON.stringify(passwords));
+
+                    localStorage.setItem('currentUser', JSON.stringify(newUser));
+                    closeModal('registerModal');
+                    renderHeader();
+                    updateHeader();
+                    registerForm.reset();
+                });
+            }
+
+            // Contact Form
+            const contactForm = document.getElementById('contactForm');
+            if (contactForm) {
+                contactForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    alert('Thank you for contacting us! We will get back to you soon.');
+                    contactForm.reset();
+                });
+            }
+
+            // Cart Modal
+            const cartModal = document.getElementById('cartModal');
+            if (cartModal) {
+                cartModal.addEventListener('click', (e) => {
+                    if (e.target === cartModal) closeModal('cartModal');
+                });
+            }
+
+            // Product Modal
+            const productModal = document.getElementById('productModal');
+            if (productModal) {
+                productModal.addEventListener('click', (e) => {
+                    if (e.target === productModal) closeModal('productModal');
+                });
+            }
+
+            // Auth Modals
+            [document.getElementById('loginModal'), document.getElementById('registerModal')].forEach(modal => {
+                if (modal) {
+                    modal.addEventListener('click', (e) => {
+                        if (e.target === modal) closeModal(modal.id);
+                    });
+                }
+            });
+        }
+
+        function toggleMenu() {
+            const nav = document.querySelector('.navigation');
+            const hamburger = document.querySelector('.hamburger');
+            if (nav) {
+                nav.classList.toggle('active');
+            }
+            if (hamburger) {
+                hamburger.classList.toggle('active');
+            }
+        }
+
+        function toggleUserMenu() {
+            const menu = document.getElementById('userMenuDropdown');
+            if (menu) {
+                menu.classList.toggle('active');
+            }
+        }
+
+        function viewAccount() {
+            const user = getCurrentUser();
+            alert(`Account Details:\n\nName: ${user.name}\nEmail: ${user.email}`);
+        }
+
+        function logout() {
+            localStorage.removeItem('currentUser');
+            renderHeader();
+            updateHeader();
+            if (document.getElementById('userMenuDropdown')) {
+                document.getElementById('userMenuDropdown').classList.remove('active');
+            }
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
